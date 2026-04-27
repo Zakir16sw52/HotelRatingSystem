@@ -2,6 +2,7 @@ package com.zhk.rating.controllers;
 
 import com.zhk.rating.entities.Ratings;
 import com.zhk.rating.entities.services.RatingServices;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ public class RatingController {
     @Autowired
     private RatingServices ratingService;
 
+    private org.slf4j.Logger logger= org.slf4j.LoggerFactory.getLogger(RatingController.class);
     @PostMapping("")
     public ResponseEntity<Ratings> createRating(@RequestBody Ratings rating){
         return ResponseEntity.status(HttpStatus.CREATED).body(ratingService.createRating(rating));
@@ -32,6 +34,8 @@ public class RatingController {
 
     @GetMapping("user/{userId}")
     public ResponseEntity<List<Ratings>> getRatingsByUserId(@PathVariable String userId){
-        return ResponseEntity.ok(ratingService.getRatingsByUserId(userId));
+        List<Ratings> ratingList=ratingService.getRatingsByUserId(userId);
+        logger.info("Rating List",ratingList);
+        return ResponseEntity.ok(ratingList);
     }
 }
